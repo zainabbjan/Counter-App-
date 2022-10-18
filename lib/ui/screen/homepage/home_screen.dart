@@ -31,7 +31,7 @@ class MyHomePage extends StatelessWidget {
                           'You have pushed the button this many times:',
                         ),
                         Text(
-                          model.counter.toString(),
+                          model.count.toString(),
                           style: Theme.of(context).textTheme.headline4,
                         )
                       ],

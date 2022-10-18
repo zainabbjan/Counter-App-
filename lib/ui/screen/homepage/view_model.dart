@@ -1,67 +1,58 @@
 import 'dart:developer';
 import 'dart:math';
-import 'package:constcolor/core/enum/colorChanged.dart';
+import 'package:constcolor/core/const.dart';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class HomeViewModel with ChangeNotifier {
-  int _counter = 0;
-  int get counter => _counter;
-  Color backgroundColor = Colors.white;
+  int _count = 0;
+
+  int get count => _count;
+  Color backgroundColor = primaries.first;
+
   var random = Random();
-  ColorEnum colorEnum = ColorEnum.unit;
 
   void incrementCounter() {
-    if (counter < 9) {
-      checkCounter(ColorEnum.unit, ColorEnum.ten);
-      _counter++;
-    } else if (counter >= 9 && counter < 90) {
-      checkCounter(ColorEnum.ten, ColorEnum.hundred);
-      _counter += _counter == 9 ? 1 : 10;
-    } else if (counter >= 90 && counter < 900) {
-      checkCounter(ColorEnum.hundred, ColorEnum.thousand);
-      _counter += _counter == 90 ? 10 : 100;
-    } else if (counter >= 900 && counter < 9000) {
-      checkCounter(ColorEnum.thousand, ColorEnum.tenThousand);
-      _counter += _counter == 900 ? 100 : 1000;
-    } else if (counter >= 9000 && counter < 90000) {
-      _counter += _counter == 9000 ? 1000 : 10000;
-      checkCounter(ColorEnum.tenThousand, ColorEnum.humdredThousand);
-    } else if (counter >= 90000 && counter < 900000) {
-      checkCounter(ColorEnum.humdredThousand, ColorEnum.million);
-      _counter += _counter == 90000 ? 10000 : 100000;
+    if (count < 10) {
+      _count += 1;
+      if (count == 10) {
+        getRandomColor();
+      }
+    } else if (count >= 10 && count < 100) {
+      _count += 10;
+      if (count == 100) {
+        getRandomColor();
+      }
+    } else if (count >= 100 && count < 1000) {
+      _count += 100;
+      if (count == 1000) {
+        getRandomColor();
+      }
+    } else if (count >= 1000 && count < 10000) {
+      _count += 1000;
+      if (count == 10000) {
+        getRandomColor();
+      }
+    } else if (count >= 10000 && count < 100000) {
+      _count += 10000;
+      if (count == 100000) {
+        getRandomColor();
+      }
     } else {
-      _counter += 100000;
+      _count += 10000;
     }
-
     notifyListeners();
   }
 
-  checkCounter(ColorEnum check, ColorEnum next) {
-    if (colorEnum == check) {
-      getRandomColor();
-    }
-    colorEnum = next;
-  }
-
-  static const List<MaterialColor> _primaries = <MaterialColor>[
-    Colors.red,
-    Colors.pink,
-    Colors.purple,
-    Colors.deepPurple,
-    Colors.indigo,
-    Colors.lightBlue,
-    Colors.cyan,
-    Colors.teal,
-    Colors.yellow,
-    Colors.blueGrey,
-  ];
-  List<MaterialColor> get primaries => _primaries;
-
   void getRandomColor() {
     var random = Random();
-    Color randomColor = _primaries[random.nextInt(_primaries.length)];
-
+    Color randomColor = primaries[random.nextInt(primaries.length)];
+    if (randomColor == backgroundColor) {
+      getRandomColor();
+    } else {
+      backgroundColor = randomColor;
+    }
     notifyListeners();
   }
 }
